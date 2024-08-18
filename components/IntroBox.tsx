@@ -40,13 +40,6 @@ const IntroBox: React.FC = () => {
       >
         <span className="text-2xl">&#9660;</span>
       </div>
-      <div
-        className={`mt-4 text-white flex justify-center items-center transition-transform duration-300 ${
-          isOpen ? 'rotate-180' : 'rotate-0'
-        }`}
-      >
-        <span className="text-2xl">&#9660;</span>
-      </div>
     </div>
   );
 };
