@@ -49,7 +49,6 @@ const Map: React.FC = () => {
     map.addControl(new mapboxgl.NavigationControl());
 
     map.on('load', () => {
-      // Add sources and layers for both current and historical data
       ['current', 'historical'].forEach(layerType => {
         const sourceData = layerType === 'current' ? currentData : historicalData;
         

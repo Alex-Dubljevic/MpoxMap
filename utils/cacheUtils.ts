@@ -1,7 +1,5 @@
-// utils/cacheUtils.ts
-
 const CACHE_KEY = 'mpox_news_cache';
-const CACHE_EXPIRATION = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+const CACHE_EXPIRATION = 24 * 60 * 60 * 1000; // 1 day
 
 interface CacheItem {
   timestamp: number;
@@ -38,7 +36,6 @@ export const setCachedData = (page: number, data: any[]): void => {
   }
 };
 
-// Function to clear cache
 export const clearCache = (): void => {
     try {
       localStorage.removeItem(CACHE_KEY);

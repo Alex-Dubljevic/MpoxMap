@@ -21,16 +21,24 @@ const IntroBox: React.FC = () => {
         className={`text-white overflow-hidden transition-max-height duration-500 ease-in-out ${isOpen ? 'max-h-screen' : 'max-h-0'}`}
       >
         <p>
-        Mpox, formerly known as monkeypox, is a viral zoonotic disease caused by the Mpox virus. It is characterized by fever, rash, and swollen lymph nodes, 
-        and can spread from animals to humans and between humans through contact with infected materials or respiratory droplets.
+  Mpox, formerly known as monkeypox, is a viral zoonotic disease caused by the Mpox virus. It is characterized by fever, rash, and swollen lymph nodes,
+  and can spread from animals to humans and between humans through contact with infected materials or respiratory droplets.
+  <br /><br />
+  The recent outbreak of Clade 1 Mpox is particularly concerning because it differs from the more common Clade 2.
+  Clade 1 has shown a higher mortality rate and more severe symptoms,
+  raising alarms about its potential impact compared to previous Mpox outbreaks.
+  This variant&apos;s behavior and spread patterns are still being studied,
+  but its emergence signals a need for heightened vigilance and response. I&apos;ve created this website to track the spread
+  of Mpox Clade 1, and data regarding the 2022 outbreak of Mpox Clade 2 is available in the historical tab.
+</p>    
 
-The recent outbreak of Clade 1 Mpox is particularly concerning because it differs from the more common Clade 2. 
-Clade 1 has shown a higher mortality rate and more severe symptoms, 
-raising alarms about its potential impact compared to previous Mpox outbreaks. 
-This variant's behavior and spread patterns are still being studied, 
-but its emergence signals a need for heightened vigilance and response. I've created this website to track the spread
-of Mpox Clade 1, and data regarding the 2022 outbreak of Mpox Clade 2 is available in the historical tab.
-        </p>
+      </div>
+      <div
+        className={`mt-4 text-white flex justify-center items-center transition-transform duration-300 ${
+          isOpen ? 'rotate-180' : 'rotate-0'
+        }`}
+      >
+        <span className="text-2xl">&#9660;</span>
       </div>
       <div
         className={`mt-4 text-white flex justify-center items-center transition-transform duration-300 ${

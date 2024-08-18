@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import './globals.css';
 import { ReactNode } from 'react';
-import { BackgroundBeams } from '../components/ui/background-beams'; // Ensure the correct path to your BackgroundBeams component
+import { BackgroundBeams } from '../components/ui/background-beams'; 
 
 export default function Layout({ children }: { children: ReactNode }) {
   return (
@@ -14,9 +14,7 @@ export default function Layout({ children }: { children: ReactNode }) {
       </Head>
       <body className="bg-neutral-900 text-gray-100">
         <div className="relative">
-          {/* BackgroundBeams Component */}
           <BackgroundBeams className="absolute inset-0 z-0" />
-          {/* Main Content */}
           <div className="relative z-10">
             <header className="bg-blue-800 text-white py-4">
               <div className="container mx-auto text-center">

@@ -30,7 +30,7 @@ export const fetchNews = async (page: number = 1): Promise<any> => {
     if (data && Array.isArray(data.data)) {
       console.log(`Fetched ${data.data.length} articles for page ${page}`);
       setCachedData(page, data);
-      return data; // Return the entire response object
+      return data;
     } else {
       console.error('Invalid response format from API:', data);
       throw new Error('Invalid response format from API');
