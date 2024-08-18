@@ -134,7 +134,7 @@ const Map: React.FC = () => {
         </button>
       </div>
       <div id="map" className="w-full h-[80vh] rounded-md" />
-      <div className="absolute top-4 left-4 bg-blue-800 p-6 rounded-xl shadow-md text-xl">
+      <div className="absolute top-[5rem] left-4 bg-blue-800 p-6 rounded-xl shadow-md text-xl">
         <p className="font-bold">Total Cases: {totalCases}</p>
         <p className="font-bold">Total Deaths: {totalDeaths}</p>
         <p className="font-bold">Countries Affected: {totalCountries}</p>

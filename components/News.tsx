@@ -65,9 +65,27 @@ const News: React.FC = () => {
 
   return (
     <section className="bg-blue-800 py-6 rounded-xl">
+      <style jsx>{`
+        .scroll-container {
+          padding-right: 12px; 
+        }
+        ::-webkit-scrollbar {
+          width: 12px;
+        }
+        ::-webkit-scrollbar-track {
+          background-color: #1e3a8a;
+        }
+        ::-webkit-scrollbar-thumb {
+          background-color: #171717;
+          border-radius: 6px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+          background-color: #111111;
+        }
+      `}</style>
       <div className="container mx-auto px-4">
         <h2 className="text-4xl font-bold mb-4 text-white">Recent Mpox News</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 overflow-y-auto max-h-[400px]">
+        <div className="scroll-container grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 rounded-lg overflow-y-auto max-h-[400px]">
           {articles.map((article) => (
             <div key={article.uuid} className="bg-neutral-900 p-4 rounded-lg shadow-md">
               <img
