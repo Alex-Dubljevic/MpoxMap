@@ -24,12 +24,11 @@ const Map: React.FC = () => {
   useEffect(() => {
     const loadData = async () => {
       try {
-        const data = await parseCSV('/mpoxdata.csv');
-        setHistoricalData(data);
+        const Hdata = await parseCSV('/mpoxdata.csv');
+        setHistoricalData(Hdata);
         
-        // For this example, let's assume current data is a subset of historical data
-        // You might want to load this from a different source in a real application
-        setCurrentData(data.slice(0, 10));
+        const Cdata = await parseCSV('/currentmpox.csv');
+        setCurrentData(Cdata);
       } catch (error) {
         console.error('Error loading data:', error);
       }
@@ -42,7 +41,7 @@ const Map: React.FC = () => {
     const map = new mapboxgl.Map({
       container: 'map',
       style: 'mapbox://styles/mapbox/dark-v10',
-      center: [0, 20],
+      center: [20, 10],
       zoom: 2,
       projection: 'globe',
     });
@@ -122,25 +121,27 @@ const Map: React.FC = () => {
 
   return (
     <div className="relative">
-      <div className="flex justify-center space-x-4 mb-4">
+      <div className="flex justify-center space-x-4 mb-8">
         <button
-          className={`px-4 py-2 ${currentLayer === 'current' ? 'bg-blue-800 text-white' : 'bg-gray-800'}`}
+          className={`px-6 py-3 text-lg ${currentLayer === 'current' ? 'bg-blue-800 text-white' 
+          : 'bg-gray-800 hover:bg-gray-600'}`}
           onClick={() => (window as any).toggleLayer('current')}
         >
           Current Data
         </button>
         <button
-          className={`px-4 py-2 ${currentLayer === 'historical' ? 'bg-blue-800 text-white' : 'bg-gray-800'}`}
+          className={`px-6 py-3 text-lg ${currentLayer === 'historical' ? 'bg-blue-800 text-white' 
+          : 'bg-gray-800 hover:bg-gray-600'}`}
           onClick={() => (window as any).toggleLayer('historical')}
         >
           Historical Data
         </button>
       </div>
       <div id="map" className="w-full h-[80vh] rounded-md" />
-      <div className="absolute top-4 left-4 bg-blue-800 p-4 rounded-md shadow-md">
-        <p>Total Cases: {totalCases}</p>
-        <p>Total Deaths: {totalDeaths}</p>
-        <p>Countries Affected: {totalCountries}</p>
+      <div className="absolute top-4 left-4 bg-blue-800 p-6 rounded-xl shadow-md text-xl">
+        <p className="font-bold">Total Cases: {totalCases}</p>
+        <p className="font-bold">Total Deaths: {totalDeaths}</p>
+        <p className="font-bold">Countries Affected: {totalCountries}</p>
       </div>
     </div>
   );

@@ -2,6 +2,7 @@ import Map from '../components/Map';
 import News from '../components/News';
 import IntroBox from '../components/IntroBox';
 import Head from 'next/head';
+import NewsletterSignup from '@/components/NewsletterSignup';
 
 const Home: React.FC = () => {
 
@@ -22,6 +23,9 @@ const Home: React.FC = () => {
           </section>
           <section className="mb-12">
             <News />
+          </section>
+          <section className="mb-12">
+            <NewsletterSignup />
           </section>
         </main>
       </div>

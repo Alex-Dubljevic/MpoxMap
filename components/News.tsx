@@ -66,17 +66,17 @@ const News: React.FC = () => {
   return (
     <section className="bg-blue-800 py-6 rounded-xl">
       <div className="container mx-auto px-4">
-        <h2 className="text-2xl font-bold mb-4 text-white">Recent Mpox News</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 overflow-y-auto max-h-[600px]">
+        <h2 className="text-4xl font-bold mb-4 text-white">Recent Mpox News</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 overflow-y-auto max-h-[400px]">
           {articles.map((article) => (
-            <div key={article.uuid} className="bg-white p-4 rounded-lg shadow-md">
+            <div key={article.uuid} className="bg-neutral-900 p-4 rounded-lg shadow-md">
               <img
                 src={article.image_url || '/placeholder-image.png'}
                 alt={article.title}
                 className="w-full h-40 object-cover mb-4 rounded-md"
               />
-              <h3 className="text-lg font-semibold mb-2 text-black">{article.title}</h3>
-              <p className="text-sm mb-2 text-gray-600">{article.description}</p>
+              <h3 className="text-lg font-semibold mb-2 text-white">{article.title}</h3>
+              <p className="text-sm mb-2 text-gray-400">{article.description}</p>
               <a href={article.url} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">
                 Read more
               </a>
@@ -87,7 +87,7 @@ const News: React.FC = () => {
           <button
             onClick={loadMore}
             disabled={isLoading}
-            className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:bg-gray-400"
+            className="mt-4 px-4 py-2 bg-neutral-900 text-white rounded hover:bg-neutral-700 disabled:bg-gray-400"
           >
             {isLoading ? 'Loading...' : 'Load More'}
           </button>

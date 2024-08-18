@@ -52,7 +52,7 @@ body {
 }
 
 .background-beams {
-  transform: translateZ(0); /* Triggers GPU acceleration */
+  transform: translateZ(0);
 }
 
 button {
