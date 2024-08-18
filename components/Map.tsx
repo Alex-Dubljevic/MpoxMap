@@ -93,10 +93,8 @@ const Map: React.FC = () => {
         setTotalCountries(data.length);
       };
 
-      // Initial update
       updateTotals(currentData);
-
-      // Toggle layer visibility
+   
       const toggleLayer = (layer: 'current' | 'historical') => {
         setCurrentLayer(layer);
 
@@ -105,8 +103,7 @@ const Map: React.FC = () => {
 
         map.setLayoutProperty('current-countries-layer', 'visibility', currentVisibility);
         map.setLayoutProperty('historical-countries-layer', 'visibility', historicalVisibility);
-
-        // Update totals based on the selected layer
+ 
         updateTotals(layer === 'current' ? currentData : historicalData);
       };
 

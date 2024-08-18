@@ -1,3 +1,5 @@
+// utils/fetchnews.ts
+
 import { clearCache, getCachedData, setCachedData } from './cacheUtils';
 
 const API_KEY = process.env.NEXT_PUBLIC_NEWS_API_KEY;
