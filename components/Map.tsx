@@ -88,29 +88,6 @@ const Map: React.FC = () => {
         });
       });
 
-      // Add popup for specific data on click
-      map.on('click', ['current-countries-layer', 'historical-countries-layer'], (e) => {
-        if (e.features && e.features.length > 0) {
-          const feature = e.features[0];
-          const coordinates = feature.geometry.coordinates.slice();
-          const { title, cases, deaths } = feature.properties;
-
-          new mapboxgl.Popup()
-            .setLngLat(coordinates)
-            .setHTML(`<strong>${title}</strong><p>Cases: ${cases}</p><p>Deaths: ${deaths}</p>`)
-            .addTo(map);
-        }
-      });
-
-      // Change cursor to pointer on hover
-      map.on('mouseenter', ['current-countries-layer', 'historical-countries-layer'], () => {
-        map.getCanvas().style.cursor = 'pointer';
-      });
-
-      map.on('mouseleave', ['current-countries-layer', 'historical-countries-layer'], () => {
-        map.getCanvas().style.cursor = '';
-      });
-
       // Function to update totals
       const updateTotals = (data: CountryData[]) => {
         setTotalCases(data.reduce((sum, country) => sum + country.cases, 0));
