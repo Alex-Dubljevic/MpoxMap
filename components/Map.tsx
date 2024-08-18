@@ -2,33 +2,40 @@
 
 import { useEffect, useState } from 'react';
 import mapboxgl from 'mapbox-gl';
-import { parseCSV } from '../utils/csvReader'; // Adjust the import path as needed
+import { parseCSV } from '../utils/csvReader';
 
 mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAP_API_KEY || '';
 
-// Placeholder data
-const currentData = [
-  { name: 'USA', cases: 6000, coordinates: [-98.35, 39.50] },
-  { name: 'Brazil', cases: 2000, coordinates: [-51.93, -14.24] },
-  { name: 'India', cases: 1500, coordinates: [78.96, 20.59] },
-];
+interface CountryData {
+  name: string;
+  cases: number;
+  deaths: number;
+  coordinates: [number, number];
+}
 
 const Map: React.FC = () => {
-  const [historicalData, setHistoricalData] = useState<any[]>([]);
+  const [historicalData, setHistoricalData] = useState<CountryData[]>([]);
+  const [currentData, setCurrentData] = useState<CountryData[]>([]);
   const [currentLayer, setCurrentLayer] = useState<'current' | 'historical'>('current');
+  const [totalCases, setTotalCases] = useState(0);
+  const [totalDeaths, setTotalDeaths] = useState(0);
+  const [totalCountries, setTotalCountries] = useState(0);
 
   useEffect(() => {
-    // Load historical data from CSV
-    const loadHistoricalData = async () => {
+    const loadData = async () => {
       try {
-        const data = await parseCSV('/mpoxdata.csv'); // Adjust path as necessary
+        const data = await parseCSV('/mpoxdata.csv');
         setHistoricalData(data);
+        
+        // For this example, let's assume current data is a subset of historical data
+        // You might want to load this from a different source in a real application
+        setCurrentData(data.slice(0, 10));
       } catch (error) {
-        console.error('Error loading historical data:', error);
+        console.error('Error loading data:', error);
       }
     };
 
-    loadHistoricalData();
+    loadData();
   }, []);
 
   useEffect(() => {
@@ -43,67 +50,56 @@ const Map: React.FC = () => {
     map.addControl(new mapboxgl.NavigationControl());
 
     map.on('load', () => {
-      // Add sources for country layer
-      map.addSource('current-countries', {
-        type: 'geojson',
-        data: {
-          type: 'FeatureCollection',
-          features: currentData.map((country) => ({
-            type: 'Feature',
-            geometry: {
-              type: 'Point',
-              coordinates: country.coordinates,
-            },
-            properties: {
-              title: country.name,
-              cases: country.cases,
-            },
-          })),
-        },
-      });
+      // Add sources and layers for both current and historical data
+      ['current', 'historical'].forEach(layerType => {
+        const sourceData = layerType === 'current' ? currentData : historicalData;
+        
+        map.addSource(`${layerType}-countries`, {
+          type: 'geojson',
+          data: {
+            type: 'FeatureCollection',
+            features: sourceData.map((country) => ({
+              type: 'Feature',
+              geometry: {
+                type: 'Point',
+                coordinates: country.coordinates,
+              },
+              properties: {
+                title: country.name,
+                cases: country.cases,
+                deaths: country.deaths,
+              },
+            })),
+          },
+        });
 
-      map.addSource('historical-countries', {
-        type: 'geojson',
-        data: {
-          type: 'FeatureCollection',
-          features: historicalData.map((country) => ({
-            type: 'Feature',
-            geometry: {
-              type: 'Point',
-              coordinates: country.coordinates,
-            },
-            properties: {
-              title: country.name,
-              cases: country.cases,
-            },
-          })),
-        },
-      });
-
-      // Add layers to map for data
-      map.addLayer({
-        id: 'current-countries-layer',
-        type: 'circle',
-        source: 'current-countries',
-        paint: {
-          'circle-radius': ['step', ['get', 'cases'], 5, 1000, 10, 5000, 30],
-          'circle-color': '#ff0000',
-          'circle-opacity': 0.7,
-        },
-      });
-
-      map.addLayer({
-        id: 'historical-countries-layer',
-        type: 'circle',
-        source: 'historical-countries',
-        paint: {
-            'circle-radius': ['interpolate', ['linear'], ['get', 'cases'], 0, 5, 30000, 50],
-            'circle-color': '#ff0000',
+        map.addLayer({
+          id: `${layerType}-countries-layer`,
+          type: 'circle',
+          source: `${layerType}-countries`,
+          paint: {
+            'circle-radius': ['interpolate', ['linear'], ['get', 'cases'], 0, 5, 1000, 12, 20000, 50],
+            'circle-color': layerType === 'current' ? '#ff0000' : '#ff0000',
             'circle-opacity': 0.7,
           },
-        layout: {
-          visibility: 'none',
-        },
+          layout: {
+            visibility: layerType === 'current' ? 'visible' : 'none',
+          },
+        });
+      });
+
+      // Add popup for specific data on click
+      map.on('click', ['current-countries-layer', 'historical-countries-layer'], (e) => {
+        if (e.features && e.features.length > 0) {
+          const feature = e.features[0];
+          const coordinates = feature.geometry.coordinates.slice();
+          const { title, cases, deaths } = feature.properties;
+
+          new mapboxgl.Popup()
+            .setLngLat(coordinates)
+            .setHTML(`<strong>${title}</strong><p>Cases: ${cases}</p><p>Deaths: ${deaths}</p>`)
+            .addTo(map);
+        }
       });
 
       // Change cursor to pointer on hover
@@ -115,6 +111,16 @@ const Map: React.FC = () => {
         map.getCanvas().style.cursor = '';
       });
 
+      // Function to update totals
+      const updateTotals = (data: CountryData[]) => {
+        setTotalCases(data.reduce((sum, country) => sum + country.cases, 0));
+        setTotalDeaths(data.reduce((sum, country) => sum + country.deaths, 0));
+        setTotalCountries(data.length);
+      };
+
+      // Initial update
+      updateTotals(currentData);
+
       // Toggle layer visibility
       const toggleLayer = (layer: 'current' | 'historical') => {
         setCurrentLayer(layer);
@@ -124,6 +130,9 @@ const Map: React.FC = () => {
 
         map.setLayoutProperty('current-countries-layer', 'visibility', currentVisibility);
         map.setLayoutProperty('historical-countries-layer', 'visibility', historicalVisibility);
+
+        // Update totals based on the selected layer
+        updateTotals(layer === 'current' ? currentData : historicalData);
       };
 
       (window as any).toggleLayer = toggleLayer;
@@ -132,25 +141,30 @@ const Map: React.FC = () => {
     return () => {
       map.remove();
     };
-  }, [historicalData]);
+  }, [historicalData, currentData]);
 
   return (
-    <div>
+    <div className="relative">
       <div className="flex justify-center space-x-4 mb-4">
         <button
-          className={`px-4 py-2 ${currentLayer === 'current' ? 'bg-blue-500 text-white' : 'bg-gray-300'}`}
+          className={`px-4 py-2 ${currentLayer === 'current' ? 'bg-blue-800 text-white' : 'bg-gray-800'}`}
           onClick={() => (window as any).toggleLayer('current')}
         >
           Current Data
         </button>
         <button
-          className={`px-4 py-2 ${currentLayer === 'historical' ? 'bg-blue-500 text-white' : 'bg-gray-300'}`}
+          className={`px-4 py-2 ${currentLayer === 'historical' ? 'bg-blue-800 text-white' : 'bg-gray-800'}`}
           onClick={() => (window as any).toggleLayer('historical')}
         >
           Historical Data
         </button>
       </div>
-      <div id="map" className="w-full h-[80vh] rounded-md relative" />
+      <div id="map" className="w-full h-[80vh] rounded-md" />
+      <div className="absolute top-4 left-4 bg-blue-800 p-4 rounded-md shadow-md">
+        <p>Total Cases: {totalCases}</p>
+        <p>Total Deaths: {totalDeaths}</p>
+        <p>Countries Affected: {totalCountries}</p>
+      </div>
     </div>
   );
 };

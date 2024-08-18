@@ -37,3 +37,12 @@ export const setCachedData = (page: number, data: any[]): void => {
     console.error('Error writing to cache:', error);
   }
 };
+
+// Function to clear cache
+export const clearCache = (): void => {
+    try {
+      localStorage.removeItem(CACHE_KEY);
+    } catch (error) {
+      console.error('Error clearing cache:', error);
+    }
+  };

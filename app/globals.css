@@ -58,3 +58,7 @@ body {
 button {
   border-radius: 14px;
 }
+
+.transition-max-height {
+  transition: max-height 0.5s ease-in-out;
+}

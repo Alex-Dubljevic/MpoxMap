@@ -18,7 +18,7 @@ export default function Layout({ children }: { children: ReactNode }) {
           <BackgroundBeams className="absolute inset-0 z-0" />
           {/* Main Content */}
           <div className="relative z-10">
-            <header className="bg-blue-800 text-white py-4">
+            <header className="bg-blue-900 text-white py-4">
               <div className="container mx-auto text-center">
                 <h1 className="text-8xl font-source-serif font-bold-700">Welcome to MpoxMap</h1>
                 <p className="mt-2 text-lg font-source-serif">Real-time tracking and information on mpox outbreaks globally.</p>
