@@ -27,7 +27,7 @@ export default function Layout({ children }: { children: ReactNode }) {
             </main>
             <footer className="bg-gray-800 text-white py-4 text-center">
             <p>
-                MpoxMap last updated August 18 2024 - Created by Alex Dubljevic - adubljev@uwaterloo.ca -  
+                MpoxMap last updated August 28 2024 - Created by Alex Dubljevic - adubljev@uwaterloo.ca -  
                 <a 
                   href="https://www.who.int/news-room/fact-sheets/detail/monkeypox" 
                   target="_blank" 
